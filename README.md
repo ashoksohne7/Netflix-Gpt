@@ -7,6 +7,13 @@
 -Login-form
 -Form validation
 -useRef Hook
+-Firebas setup
+-Diploy the app to production 
+-Implimen sign in user api
+-Created redux store with user slice 
+
+
+
 
 # FEATURES
 

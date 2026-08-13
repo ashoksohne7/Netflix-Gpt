@@ -1,17 +1,21 @@
 import { useState ,useRef} from 'react';
 import Header from './Header';
 import { checkValidData } from '../utiles/validation';
-import {  createUserWithEmailAndPassword ,signInWithEmailAndPassword } from "firebase/auth";
+import {  createUserWithEmailAndPassword ,signInWithEmailAndPassword ,updateProfile} from "firebase/auth";
 import { auth } from '../utiles/firebase';
+import {useNavigate} from 'react-router-dom'
 
 
 
 const Login = () => {
   const[isSigninForm, setIsSigninForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
+
 
   const email = useRef(null);
   const password = useRef(null);
+  const name = useRef(null);
   
   const handleButtonClick = () => {
     //validate the form data for that ve use utils
@@ -21,9 +25,20 @@ const Login = () => {
     
     if(!isSigninForm){
          createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
-     .then((userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
+         .then((userCredential) => {
+         // Signed up 
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value ,
+            photoURL: "https://media.licdn.com/dms/image/v2/D4E03AQEbCWQRdNPuEg/profile-displayphoto-scale_100_100/B4EZ_vg3xbIAAc-/0/1786429801239?e=1788393600&v=beta&t=Tc9vtbVfUDLPJmAtwiXwrNrI8m6-PtG9g8Rv-2j25AA"
+        }).then(() => {
+         navigate("/");
+         
+        })
+        .catch((error) => {
+         
+        });
+        
          
        })
      .catch((error) => {
@@ -40,6 +55,7 @@ const Login = () => {
          // Signed in 
           const user = userCredential.user;
           console.log(user);
+          navigate("/browse");
           
        })
       .catch((error) => {
@@ -81,6 +97,7 @@ const Login = () => {
         
         {!isSigninForm &&(
         <input 
+            ref={name}
             type="text" 
             placeholder="Enter your Full name" 
             className="w-full p-4 my-4 bg-gray-700 " 

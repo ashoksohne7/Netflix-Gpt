@@ -1,9 +1,30 @@
 import {signOut} from "firebase/auth";
 import { auth } from "../utiles/firebase";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from 'react';
+
 
 const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+    const [activeNav, setActiveNav] = useState("Home"); 
+
+
+
+
+
+
+  
   const navigate = useNavigate();
+  const user = useSelector((store) => store.user);
   const handleSignOut = () => {
          signOut(auth).then(() => {
          // Sign-out successful.
@@ -17,10 +38,12 @@ const Header = () => {
   
   return (
     <div
-      className="absolute top-0 left-0 z-50 flex items-center justify-between w-full px-12 py-4"
+      className="fixed top-0 left-0 z-50 flex items-center justify-between w-full px-12 py-4 transition-all duration-300"
       style={{
-        background:
-          "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)",
+        background: scrolled
+          ? 'rgba(0,0,0,0.95)'
+          : 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%)', 
+      
       }}
     >
       {/* Netflix Logo */}
@@ -29,7 +52,11 @@ const Header = () => {
         src="https://occ.a.nflxso.net/dnmt/api/v6/iL4oJVDYZ8KLSrJ6eG2OwtghbfQ/AAAAAZge2REfWoSoWRs31izjUdgihldMUslSHTdfz-1aT4vVrgJuVByU92G8wIrBkwULJHWjM1khpzW0xWndigQFYViKFpy-pM6NZFnTKEPkpf9hcdSzCyzqBbcouyIpmgVLbodhaeyqCXaS.svg"
         alt="Netflix Logo"
       />
+     
+   {user && (
+        <>
 
+     
       {/* Nav Links */}
       <nav className="hidden gap-10 text-sm font-medium text-gray-200 md:flex">
         {["Home", "Shows", "Movies", "New & Popular", "My List", "Browse by Languages"].map(
@@ -37,8 +64,14 @@ const Header = () => {
             <a
               key={item}
               href="#"
-              className={`hover:text-white transition-colors ${
-                item === "Home" ? "text-white font-semibold" : ""
+            onClick={() => {
+              setActiveNav(item); // 
+              if(item === "Home") window.scrollTo({top: 0, behavior: 'smooth'});
+            }}
+            className={`px-3 py-1 rounded-full transition-colors
+              ${activeNav === item 
+                ? "bg-white text-black font-semibold"  
+                : "text-gray-200 hover:text-white"     
               }`}
             >
               {item}
@@ -113,7 +146,9 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </div>
+      </>
+      )}
+    </div> 
   );
 };
 

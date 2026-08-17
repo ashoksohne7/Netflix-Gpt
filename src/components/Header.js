@@ -3,9 +3,15 @@ import { auth } from "../utiles/firebase";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from 'react';
+import { toggleGptSearchView } from '../utiles/gptSlice';
+import { useDispatch } from 'react-redux';
+
+
 
 
 const Header = () => {
+  
+  const dispatch = useDispatch(); 
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -83,20 +89,21 @@ const Header = () => {
       {/* Right Side */}
       <div className="flex items-center gap-5">
         {/* Search Icon */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-white transition-colors cursor-pointer hover:text-gray-300"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
-          />
-        </svg>
+         <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-5 h-5 text-white transition-colors cursor-pointer hover:text-gray-300"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+    onClick={() => dispatch(toggleGptSearchView())} // ✅ Bas yeh add karo
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
+    />
+  </svg>
 
         {/* Bell Icon */}
         <div className="relative cursor-pointer">

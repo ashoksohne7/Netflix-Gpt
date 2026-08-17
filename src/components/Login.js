@@ -85,8 +85,8 @@ const Login = () => {
       {/* Form */}
       <form
         key={isSigninForm ? "signin" : "signup"}
-        onSubmit={(e) => e.preventDefault()}
-        className="absolute left-0 right-0 w-11/12 p-8 mx-auto my-16 text-white bg-black rounded-lg sm:w-8/12 md:w-6/12 lg:w-4/12 xl:w-3/12 sm:p-10 md:p-12 sm:my-24 md:my-36 opacity-80"
+        onSubmit={(e) => e.preventDefault()} 
+        className="absolute left-0 right-0 w-11/12 p-8 mx-auto my-16 text-white bg-black rounded-lg sm:w-8/12 md:w-6/12 lg:w-4/12 xl:w-3/12 sm:p-12 sm:my-36 opacity-80"
       >
         <h1 className="py-4 text-2xl font-bold sm:text-3xl">
           {isSigninForm ? "Sign In" : "Sign Up"}
